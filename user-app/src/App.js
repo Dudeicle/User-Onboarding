@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import logo from './logo.svg';
 import './App.css';
-import UserForm from './Components/UserForm.js'
+import UserForm from './Components/UserForm.js';
 import axios from 'axios';
+import * as Yup from 'yup';
+import formSchema from './Validation/FormSchema.js';
 
 
 
@@ -32,7 +34,7 @@ export default function App() {
   const [disabled, setDisabled] = useState(initialDisabled)
 
   const getUsers = () => {
-    axios.get('http://localhost:4000/users')
+    axios.get('https://reqres.in/api/users?page=2')
       .then(response => {
         setUsers(response.data)
       })
@@ -42,7 +44,7 @@ export default function App() {
   }
 
   const postNewUser = newUser => {
-    axios.get('http://localhost:4000/users', newUser)
+    axios.get('https://reqres.in/api/users?page=2', newUser)
       .then(res => {
         setUsers([...users, res.data])
       })
@@ -55,22 +57,81 @@ export default function App() {
   }
 
   const onInputChange = evt => {
+
     const { name, value } = evt.target
 
+    Yup
+      .reach(formSchema, name)
+
+      .validate(value)
+
+      .then(() => {
+        setFormErrors({
+          ...formErrors,
+          [name]: ""
+        });
+      })
+
+      .catch(err => {
+        setFormErrors({
+          ...formErrors,
+          [name]: err.errors[0]
+        });
+      });
+
+    setFormValues({
+      ...formValues,
+      [name]: value
+    })
   }
 
   const onCheckboxChange = evt => {
     const { name, checked } = evt.target
 
-    setFormValues
+    setFormValues({
+      ...formValues,
+      
+    })
   }
+
+  const onSubmit = evt => {
+    evt.preventDefault()
+
+    const newUser = {
+      name: formValues.name.trim(),
+      email: formValues.email.trim(),
+      password: formValues.password
+    }
+    postNewUser(newUser)
+  }
+
+  useEffect(() => {
+    getUsers()
+  }, [])
+
+
+  useEffect(() => {
+    formSchema.isValid(formValues).then(valid => {
+      setDisabled(!valid);
+    })
+  }, [formValues])
 
 
   return (
-
-
     <div className="App">
-        <UserForm />
+      <header><h1>Users App</h1></header>
+        
+        
+        <UserForm 
+          values={formValues}
+          onInputChange={onInputChange}
+          onCheckboxChange={onCheckboxChange}
+          onSubmit={onSubmit}
+          disabled={disabled}
+          errors={formErrors}        
+        />
+    
+    
     </div>
   );
 }
