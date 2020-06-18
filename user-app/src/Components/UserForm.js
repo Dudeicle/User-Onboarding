@@ -17,7 +17,7 @@ export default function userForm (props) {
         <form onSubmit={onSubmit}>
             <div>
                 <h2>Add a User!</h2>
-                <button disabled={disabled}>Submit</button>
+                <button id="buttonBtn" disabled={disabled}>Submit</button>
             </div>
 
             <div>
