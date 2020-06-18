@@ -2,9 +2,10 @@ import React, { useState, useEffect } from 'react';
 import logo from './logo.svg';
 import './App.css';
 import UserForm from './Components/UserForm.js';
+import NewUser from './Components/NewUser.js'
 import axios from 'axios';
-import * as Yup from 'yup';
 import formSchema from './Validation/FormSchema.js';
+import * as Yup from 'yup'
 
 
 
@@ -31,10 +32,10 @@ export default function App() {
   const [ users, setUsers ] = useState()
   const [ formValues, setFormValues ] = useState(initialFormValues)
   const [ formErrors, setFormErrors ] = useState(initialFormErrors)
-  const [disabled, setDisabled] = useState(initialDisabled)
+  const [ disabled, setDisabled ] = useState(initialDisabled)
 
   const getUsers = () => {
-    axios.get('https://reqres.in/api/users?page=2')
+    axios.get('https://reqres.in/api/users')
       .then(response => {
         setUsers(response.data)
       })
@@ -44,7 +45,7 @@ export default function App() {
   }
 
   const postNewUser = newUser => {
-    axios.get('https://reqres.in/api/users?page=2', newUser)
+    axios.get('https://reqres.in/api/users', newUser)
       .then(res => {
         setUsers([...users, res.data])
       })
@@ -131,6 +132,13 @@ export default function App() {
           errors={formErrors}        
         />
     
+        {
+          users.map(friend => {
+            return (
+              <NewUser details={users}/>
+            )
+          })
+        }
     
     </div>
   );
