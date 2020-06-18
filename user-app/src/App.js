@@ -29,7 +29,7 @@ const initialDisabled = true
 
 export default function App() {
 
-  const [ users, setUsers ] = useState()
+  const [ users, setUsers ] = useState(initialUsers)
   const [ formValues, setFormValues ] = useState(initialFormValues)
   const [ formErrors, setFormErrors ] = useState(initialFormErrors)
   const [ disabled, setDisabled ] = useState(initialDisabled)
@@ -133,9 +133,9 @@ export default function App() {
         />
     
         {
-          users.map(friend => {
+          users.map(user => {
             return (
-              <NewUser details={users}/>
+              <NewUser details={user}/>
             )
           })
         }
