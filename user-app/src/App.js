@@ -37,15 +37,15 @@ export default function App() {
   const getUsers = () => {
     axios.get('https://reqres.in/api/users')
       .then(response => {
-        setUsers(response.data)
+        setUsers(response.data.data)
       })
       .catch(err => {
         debugger
       })
-  }
+}
 
   const postNewUser = newUser => {
-    axios.get('https://reqres.in/api/users', newUser)
+    axios.post('https://reqres.in/api/users', newUser)
       .then(res => {
         setUsers([...users, res.data])
       })
@@ -89,9 +89,28 @@ export default function App() {
   const onCheckboxChange = evt => {
     const { name, checked } = evt.target
 
+    Yup
+      .reach(formSchema, name)
+
+      .validate(checked)
+
+      .then(() => {
+        setFormErrors({
+          ...formErrors,
+          [name]: ""
+        });
+      })
+
+      .catch(err => {
+        setFormErrors({
+          ...formErrors,
+          [name]: err.errors[0]
+        });
+      });
+
     setFormValues({
       ...formValues,
-      
+      [name]: checked
     })
   }
 

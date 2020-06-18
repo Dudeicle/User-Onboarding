@@ -42,7 +42,7 @@ export default function userForm (props) {
                     <input 
                         type='email'
                         name='email'
-                        value={values.name}
+                        value={values.email}
                         onChange={onInputChange}
                     />
                 </label>&nbsp;
@@ -52,7 +52,7 @@ export default function userForm (props) {
                     <input 
                         type='text'
                         name='password'
-                        value={values.name}
+                        value={values.password}
                         onChange={onInputChange}
                     />
                 </label>&nbsp;
@@ -69,5 +69,4 @@ export default function userForm (props) {
             </div>
         </form>
     )
-    
 }
